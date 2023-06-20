@@ -23,10 +23,30 @@ class Home extends Component {
     // Create a array that contains the current array and the new todo item
     let new_list = [...this.state.todos, todo];
     // Update the local state with the new array.
+    const existsTodo = this.state.todos.find(item => item === todo);
+    const existsContent = this.state.todos.find(item => item.content === todo.content);
+    console.log(existsTodo);
+    console.log(existsContent);
+    console.log(this.state.todos);
+
+    if (existsContent !== undefined){
+      return;
+    } else {
+      this.setState({
+        todos: new_list,
+      });
+    }
+  };
+
+  deleteTodo = (id) => {
+    const todos = this.state.todos.filter((todo) => {
+      return todo.id !== id;
+    });
     this.setState({
-      todos: new_list,
+      todos: todos,
     });
   };
+  
   render() {
     return (
       <div className="Home">
@@ -36,7 +56,7 @@ class Home extends Component {
         <AddTodo addTodo={this.addTodo} />
         {/* When returning the Todos component, todos is a prop passed to the todos.js file
          to format and render the current todo list state */}
-        <Todos todos={this.state.todos} />
+        <Todos todos={this.state.todos} deleteTodo={this.deleteTodo()}/>
       </div>
     );
   }
